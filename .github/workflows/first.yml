@@ -3,10 +3,25 @@ on:
         branches: "*"
 
 jobs:
-    hello:
-        env:
-            BUILD_MODE: "Debug"
+    build:
+        runs-on: ubuntu-latest
+
+        
+
+
+        outputs:
+            value: ${{steps.get-ver.outputs.version}}
+
+        steps:
+            - name: Setting id
+              id: get-ver
+              run: echo "version=1.0.${{github.run_number}}">> $GITHUB_OUTPUT
+
+    
+    deploy:
+        needs: build
         runs-on: ubuntu-latest
         steps:
-            - run: echo "${{secrets.MY_NAME}}"
-            - run: echo "${{env.BUILD_MODE}}"
+            - run: echo "${{needs.build.outputs.value}}"
+
+               
