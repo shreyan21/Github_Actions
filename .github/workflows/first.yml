@@ -3,22 +3,23 @@ on:
         branches: "*"
 
 jobs:
+    
     build:
-        runs-on: ubuntu-latest
-
-        outputs:
-            author: "${{steps.one.outputs.Uploader}}"
+        
             
-        steps:
-            - id: one
-              run: |
-                 echo "Uploader=${{github.actor}}">>$GITHUB_OUTPUT
-
-    deploy:
-        needs: build
+            
         runs-on: ubuntu-latest
+        strategy:
+            matrix: 
+                node-ver: [18,20,22]
+        
         steps:
-            - run: echo "Uploader is ${{needs.build.outputs.author}}"
+            - name: Installing node-${{matrix.node-ver}}
+              uses: actions/setup-node@v2
+              with:
+                node-version: ${{matrix.node-ver}}
+            - run: echo "Node version is ${{matrix.node-ver}}"
+              
 
         
 
