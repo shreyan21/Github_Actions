@@ -4,10 +4,8 @@ on:
 
 jobs: 
     caller:
-        runs-on: ubuntu-latest
-        steps: 
-            - uses: actions/checkout@v4
-            - uses: ./.github/workflows/first.yml
+
+              uses: ./.github/workflows/first.yml
               with:
                 environment_name: production
         
