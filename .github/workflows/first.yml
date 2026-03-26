@@ -6,22 +6,21 @@ jobs:
     build:
         runs-on: ubuntu-latest
 
-        
-
-
         outputs:
-            value: ${{steps.get-ver.outputs.version}}
-
+            author: "${{steps.one.outputs.Uploader}}"
+            
         steps:
-            - name: Setting id
-              id: get-ver
-              run: echo "version=1.0.${{github.run_number}}">> $GITHUB_OUTPUT
+            - id: one
+              run: |
+                echo "Uploader=${{github.actor}}">>$GITHUB_OUTPUT
 
-    
     deploy:
         needs: build
         runs-on: ubuntu-latest
         steps:
-            - run: echo "${{needs.build.outputs.value}}"
+            - run: echo "${{needs.build.outputs.author}}"
+
+        
+
 
                
