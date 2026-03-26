@@ -1,27 +1,16 @@
 on:
-    push:
-        branches: "*"
+   workflow_call:
+    inputs:
+        environment_name:
+            required: true
+            type: string
 
 jobs:
-    
-    build:
-        
-            
-            
+    print:
         runs-on: ubuntu-latest
-        strategy:
-            matrix: 
-                node-ver: [18,20,22]
-        
         steps:
-            - name: Installing node-${{matrix.node-ver}}
-              uses: actions/setup-node@v2
-              with:
-                node-version: ${{matrix.node-ver}}
-            - run: echo "Node version is ${{matrix.node-ver}}"
-              
+            - run: echo "${{inputs.environment_name}}"
 
-        
 
 
                

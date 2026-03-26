@@ -1,0 +1,14 @@
+on:
+    push:
+        branches: "*"
+
+jobs: 
+    caller:
+        runs-on: ubuntu-latest
+        steps: 
+            - uses: ./first.yml
+              with:
+                environment_name: production
+        
+
+
