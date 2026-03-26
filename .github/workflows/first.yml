@@ -12,7 +12,7 @@ jobs:
         steps:
             - id: one
               run: |
-                echo "Uploader=${{github.actor}}">>$GITHUB_OUTPUT
+                 "Uploader=${{github.actor}}">>$GITHUB_OUTPUT
 
     deploy:
         needs: build
