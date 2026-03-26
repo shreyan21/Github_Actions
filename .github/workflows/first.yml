@@ -12,13 +12,13 @@ jobs:
         steps:
             - id: one
               run: |
-                 "Uploader=${{github.actor}}">>$GITHUB_OUTPUT
+                 echo "Uploader=${{github.actor}}">>$GITHUB_OUTPUT
 
     deploy:
         needs: build
         runs-on: ubuntu-latest
         steps:
-            - run: echo "${{needs.build.outputs.author}}"
+            - run: echo "Uploader is ${{needs.build.outputs.author}}"
 
         
 
