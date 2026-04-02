@@ -7,7 +7,7 @@ jobs:
     display:
         strategy:
             matrix: 
-                name: ['ubuntu-latest','debian-latest','fedora-latest']
+                name: ['ubuntu-latest','ubuntu-24.04','ubuntu-22.04']
         runs-on: ${{matrix.name}}
         outputs:
             job_output_name: ${{steps.one.outputs.designation}}
