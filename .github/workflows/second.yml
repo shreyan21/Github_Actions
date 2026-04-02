@@ -17,7 +17,7 @@ jobs:
                 echo "Repo owner is ${{github.repository_owner}}"
                 echo "Workflow is triggered by ${{github.actor}}"
                 echo "OS on which github actions is working ${{runner.os}}"
-                echo "designation=Software Engineer">>$GITHUB_ENV
+                echo "designation=Software Engineer">>$GITHUB_OUTPUT
 
     
     disp_output:
