@@ -3,11 +3,27 @@ on:
         branches: "*"
 
 jobs: 
-    caller:
-
-              uses: ./.github/workflows/first.yml
-              with:
-                environment_name: production
+  
+    display:
+        runs-on: ubuntu-latest
+        outputs:
+            job_output_name: ${{steps.one.outputs.designation}}
         
+        steps:
+            - name: Displaying details
+              id: one
+              run: |
+                echo "Repo owner is ${{github.repository_owner}}"
+                echo "Workflow is triggered by ${{github.actor}}"
+                echo "OS on which github actions is working ${{runner.os}}"
+                echo "designation=Software Engineer">>$GITHUB_ENV
+
+    
+    disp_output:
+        needs: display
+        runs-on: ubuntu-latest
+        steps:
+            - name: Output showing
+              run: echo "${{needs.display.outputs.job_output_name}}"
 
 
