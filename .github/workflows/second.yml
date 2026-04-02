@@ -1,32 +1,48 @@
-on:
-    push:
-        branches: "*"
+name: Level 3 - Job Dependencies & Outputs
 
-jobs: 
-  
-    display:
-        strategy:
-            matrix: 
-                name: ['ubuntu-latest','ubuntu-24.04','ubuntu-22.04']
-        runs-on: ${{matrix.name}}
-        outputs:
-            job_output_name: ${{steps.one.outputs.designation}}
-        
-        steps:
-            - name: Displaying details
-              id: one
-              run: |
-                echo "Repo owner is ${{github.repository_owner}}"
-                echo "Workflow is triggered by ${{github.actor}}"
-                echo "OS on which github actions is working ${{runner.name}}"
-                echo "designation=Software Engineer">>$GITHUB_OUTPUT
+on: [push]
 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # 1. Define Outputs for this job
+    outputs:
+      version_number: ${{ steps.set-version.outputs.version }}
+      build_status: ${{ steps.build-step.outcome }}
     
-    disp_output:
-        needs: display
-        runs-on: ubuntu-latest
-        steps:
-            - name: Output showing
-              run: echo "${{needs.display.outputs.job_output_name}}"
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set Version (Step ID is crucial)
+        id: set-version
+        run: echo "version=1.0.${{ github.run_number }}" >> $GITHUB_OUTPUT
+        
+      - name: Build Artifact
+        id: build-step
+        run: |
+          echo "Building version ${{ steps.set-version.outputs.version }}"
+          echo "Mock Build Content" > build.txt
+          
+      - name: Upload Artifact (Passing Files)
+        uses: actions/upload-artifact@v4
+        with:
+          name: my-build-file
+          path: build.txt
 
-
+  deploy:
+    runs-on: ubuntu-latest
+    # 2. Wait for build job
+    needs: build
+    
+    steps:
+      - name: Download Artifact (Getting Files)
+        uses: actions/download-artifact@v4
+        with:
+          name: my-build-file
+          
+      - name: Check Version from Previous Job
+        run: |
+          # 3. Access Output from 'build' job
+          echo "Deploying version: ${{ needs.build.outputs.version_number }}"
+          echo "Build Status was: ${{ needs.build.outputs.build_status }}"
+          ls -la # Verify build.txt is here
