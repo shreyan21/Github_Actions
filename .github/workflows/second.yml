@@ -1,12 +1,14 @@
 on:
     push:
         branches: "*"
-    workflow_dispatch:
 
 jobs: 
   
     display:
-        runs-on: ubuntu-latest
+        strategy:
+            matrix: 
+                name: ['ubuntu-latest','debian-latest','fedora-latest']
+        runs-on: ${{matrix.name}}
         outputs:
             job_output_name: ${{steps.one.outputs.designation}}
         
